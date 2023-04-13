@@ -8,13 +8,14 @@ import GeojsonVtLayer from '../components/map/GeojsonVTLayer';
 import GeoJSONLayer from '../components/map/GeojsonLayer';
 import AddBasemaps from '../components/map/Basemaps';
 import GeojsonVectorGridLayer from '../components/map/GeojsonVectorGrid';
-// import { FeatureLayer } from 'react-esri-leaflet';
-import { FeatureLayer } from 'react-esri-leaflet';
+
 
 import ParcelData from '../data/dawson/dawson_2023.json';
 
 import 'leaflet-basemaps/L.Control.Basemaps.js';
 import 'leaflet-basemaps/L.Control.Basemaps.css';
+
+import CsvTable from '../components/tables/CsvTable';
 
 
 const dawsonParcelUrl = 'https://services7.arcgis.com/Ptz860OPLeIY55cX/arcgis/rest/services/Energov_Layers_Update2021/FeatureServer/3';
@@ -80,7 +81,7 @@ function Map(props) {
 function GIS() {
     const [omap, setOMap] = useState();
     const [checked, setChecked] = useState(false);
-    const [geojson,setGeojson]=useState(ParcelData);
+    const [geojson, setGeojson] = useState(ParcelData);
     useEffect(() => {
 
         if (omap) {
@@ -89,14 +90,14 @@ function GIS() {
                 "Parcels": parcelVectorLayer,
             }
             L.control.layers(null, overLays).addTo(omap);
-            
+
             AddBasemaps(omap);
-            
+
             const geoData = L.geoJSON(geojson);
             const geoBounds = geoData.getBounds();
-            
+
             if (geoBounds) {
-                
+
                 omap.flyToBounds(geoBounds);
             }
             parcelVectorLayer.addTo(omap);
@@ -109,20 +110,12 @@ function GIS() {
         <Col xs={12}>
             <MapContainer id='map' scrollWheelZoom={true} center={center} zoom={zoom}>
                 <Map parcelData={ParcelData} setOMap={setOMap} />
-                {/* <ParcelLayer setBounds={setBounds} /> */}
-                {/* <LayersControl position='topright'>
-                    <LayersControl.Overlay checked={checked} name="Parcels" key="Parcels">
 
-                        <ParcelLayer setBounds={setBounds} />
-                    </LayersControl.Overlay>
-                    <LayersControl.BaseLayer checked name="Open Street Map">
-                        <TileLayer
-                            attribution='<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                    </LayersControl.BaseLayer>
-                </LayersControl> */}
             </MapContainer>
+        </Col>
+        <Col xs={12}>
+            <CsvTable />
+
         </Col>
     </Row>)
 }
