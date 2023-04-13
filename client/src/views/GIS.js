@@ -23,6 +23,8 @@ const dawsonParcelUrl = 'https://services7.arcgis.com/Ptz860OPLeIY55cX/arcgis/re
 
 const center = [32.191764, -83.951707]
 const zoom = 15
+const minZoom = 10
+const maxZoom = 22
 
 
 const onEachParcel = (parcel, layer) => {
@@ -86,6 +88,7 @@ function GIS() {
 
         if (omap) {
             const parcelVectorLayer = GeojsonVectorGridLayer({ map: omap, geojson });
+            console.log({parcelVectorLayer});
             const overLays = {
                 "Parcels": parcelVectorLayer,
             }
@@ -100,7 +103,8 @@ function GIS() {
 
                 omap.flyToBounds(geoBounds);
             }
-            parcelVectorLayer.addTo(omap);
+            const mapParcelLayer=parcelVectorLayer.addTo(omap);
+            console.log({mapParcelLayer});
 
         }
 
@@ -108,7 +112,7 @@ function GIS() {
 
     return (<Row>
         <Col xs={12}>
-            <MapContainer id='map' scrollWheelZoom={true} center={center} zoom={zoom}>
+            <MapContainer id='map' scrollWheelZoom={true} center={center} zoom={zoom} maxZoom={maxZoom} minZoom={minZoom}>
                 <Map parcelData={ParcelData} setOMap={setOMap} />
 
             </MapContainer>

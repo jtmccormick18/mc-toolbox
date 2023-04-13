@@ -38,10 +38,11 @@ var geojsonStyle = {
 };
 
 var defaultOptions = {
-    maxZoom: 1,
+    maxZoom: 25,
+    minZoom:1,
     tolerance: 3,
     debug: 0,
-    zindex:401,
+    zIndex:401,
     style: geojsonStyle
 };
 
@@ -57,6 +58,8 @@ const GeojsonVectorGridLayer = ({ map, geojson, options = defaultOptions, setBou
     }
 
     var vectorGrid = L.vectorGrid.slicer(geojson, {
+        ...options,
+        preferCanvas:false,
         rendererFactory: L.canvas.tile,
         vectorTileLayerStyles: {
             sliced: options.style
